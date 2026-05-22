@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Flight Delay Predictor</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="container">
+    <h1>✈️ Flight Delay Predictor</h1>
+
+    <form method="POST">
+
+        <!-- Day of Month -->
+        <label>Day of Month:</label>
+        <input type="number" name="day" min="1" max="31"
+        value="{{ form_data.day if form_data else '' }}" required>
+
+        <!-- Day of Week -->
+        <label>Day of Week:</label>
+        <select name="weekday" required>
+            <option value="">Select Day</option>
+            <option value="1" {% if form_data and form_data.weekday == "1" %}selected{% endif %}>Monday</option>
+            <option value="2" {% if form_data and form_data.weekday == "2" %}selected{% endif %}>Tuesday</option>
+            <option value="3" {% if form_data and form_data.weekday == "3" %}selected{% endif %}>Wednesday</option>
+            <option value="4" {% if form_data and form_data.weekday == "4" %}selected{% endif %}>Thursday</option>
+            <option value="5" {% if form_data and form_data.weekday == "5" %}selected{% endif %}>Friday</option>
+            <option value="6" {% if form_data and form_data.weekday == "6" %}selected{% endif %}>Saturday</option>
+            <option value="7" {% if form_data and form_data.weekday == "7" %}selected{% endif %}>Sunday</option>
+        </select>
+
+        <!-- Airline -->
+        <label>Airline:</label>
+        <select name="airline" required>
+            <option value="">Select Airline</option>
+            <option value="AA" {% if form_data and form_data.airline == "AA" %}selected{% endif %}>AA</option>
+            <option value="DL" {% if form_data and form_data.airline == "DL" %}selected{% endif %}>DL</option>
+            <option value="UA" {% if form_data and form_data.airline == "UA" %}selected{% endif %}>UA</option>
+            <option value="WN" {% if form_data and form_data.airline == "WN" %}selected{% endif %}>WN</option>
+        </select>
+
+        <!-- Time Block -->
+        <label>Time Block:</label>
+        <select name="time" required>
+            <option value="">Select Time</option>
+            <option value="Morning" {% if form_data and form_data.time == "Morning" %}selected{% endif %}>Morning</option>
+            <option value="Afternoon" {% if form_data and form_data.time == "Afternoon" %}selected{% endif %}>Afternoon</option>
+            <option value="Evening" {% if form_data and form_data.time == "Evening" %}selected{% endif %}>Evening</option>
+            <option value="Night" {% if form_data and form_data.time == "Night" %}selected{% endif %}>Night</option>
+        </select>
+
+        <!-- Distance -->
+        <label>Distance (miles):</label>
+        <input type="number" name="distance" min="0"
+        value="{{ form_data.distance if form_data else '' }}" required>
+
+        <!-- Button -->
+        <button type="submit">Predict</button>
+    </form>
+
+    <!-- Result Section -->
+    {% if prediction %}
+    <div class="result-box 
+        {% if 'DELAYED' in prediction %}delayed{% else %}ontime{% endif %}">
+        
+        <h2>{{ prediction }}</h2>
+        <p>{{ probability }}</p>
+    
+    </div>
+{% endif %}
+
+</div>
+
+</body>
+</html>
